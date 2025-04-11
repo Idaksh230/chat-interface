@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music App for Linux</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .player {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        audio {
+            width: 100%;
+            max-width: 600px;
+        }
+        .upload-section {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .playlist {
+            margin-top: 20px;
+        }
+        .playlist h2 {
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px;
+            background-color: #f2f2f2;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        li:hover {
+            background-color: #e0e0e0;
+        }
+        input[type="file"] {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Music App for Linux</h1>
+        <div class="player">
+            <audio id="audioPlayer" controls>
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+        <div class="upload-section">
+            <h2>Upload Songs</h2>
+            <input type="file" id="fileInput" accept="audio/*" multiple>
+        </div>
+        <div class="playlist">
+            <h2>Playlist</h2>
+            <ul id="playlist">
+                <!-- Uploaded songs will appear here -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const audioPlayer = document.getElementById('audioPlayer');
+        const playlist = document.getElementById('playlist');
+        const fileInput = document.getElementById('fileInput');
+
+        fileInput.addEventListener('change', handleFileSelect, false);
+
+        function handleFileSelect(event) {
+            const files = event.target.files;
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (file.type.match('audio.*')) {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = file.name;
+                    listItem.dataset.src = URL.createObjectURL(file);
+                    listItem.addEventListener('click', () => {
+                        audioPlayer.src = listItem.dataset.src;
+                        audioPlayer.play();
+                    });
+                    playlist.appendChild(listItem);
+                } else {
+                    alert('File ' + file.name + ' is not an audio file.');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
